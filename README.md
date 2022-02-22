@@ -1,1 +1,1 @@
-# LIDE_ESPOL_George-Jaramillo
+# LIDE_ESPOL_George_Jaramillo
