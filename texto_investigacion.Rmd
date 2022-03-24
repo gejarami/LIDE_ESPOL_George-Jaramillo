@@ -1,0 +1,15 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+author:"Luis Reyes y George Jaramillo" date:"`r Sys.Date()`"
+---
+```
+
+
+```
+# Después de la Universidad, ¿Seguir estudiando o adquirir experiencia?
+### El salario en Ecuador ha sido cuestionado durante años, sobre todo por los mas jóvenes, quienes al momento de culminar una carrera universitaria se encuentran indecisos al tomar la decision de adquirir experiencia laboral o mantenerse estudiando despues de obtener un título de grado. La cuestión es, ¿Qué perfil es mas buscado por el empleador?. Es muy común observar ofertas laborales que requieren personal de 25 a 35 años con un alto nivel de estudio con experiencia minima de 3 a 5 años o más.Lo cual se complica para los jovenes quienes no pueden adquirir un empleo dado que no tienen experiencia por dedicarse a estudiar o a su vez no han podido adquirir un nivel mas de estudio por encontrar un trabajo fuera de su especialización para subsitir.
+### Pues bien, según la encuesta realizada por el Instituto Nacional de Estadisticas y Censo (INEC) en el último trimestre del 2021, existe un total de ________ de personas que tienen un estudio de 4to nivel y cuentan con empleo pleno mientras que, ______ personas culminaron la carrera universitaria y se dedicaron a trabajar. 
+### Sin embargo, la conyontura se da en quienes obtienen un mejor salario.Dentro de un rango de edad de 25 a 35 años, las personas que cuentan con estudios superiores a una licenciatura (maestría o PhD) cuentan con un ingreso salarial aproximadamente de ____ y por otro lado, quienes se dedicaron a adquierir experiencia laboral demuestran remuneraciones de __________ en promedio.Esto explicaría que las empresas tienen una mayor valoracion salarial en lo que respecta a los años __________ mientras que el tiempo invertido en adquirir_______ pasa a segundo plano.
