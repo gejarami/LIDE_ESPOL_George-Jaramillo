@@ -3,14 +3,103 @@ output:
   pdf_document: default
   html_document: default
 ---
+title:"Después de la Universidad, ¿Seguir estudiando o adquirir experiencia?"
 author:"Luis Reyes y George Jaramillo" date:"`r Sys.Date()`"
 ---
+```{r data, include=FALSE}
+if(!require(readstata13)) install.packages("readstata13", repos = "http://cran.us.r-project.org")
+if(!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
+if(!require(scales)) install.packages("scales", repos = "http://cran.us.r-project.org")
+if(!require(dplyr)) install.packages("dplyr", repos = "http://cran.us.r-project.org")
+if(!require(car)) install.packages("car", repos = "http://cran.us.r-project.org")
+if(!require(boot)) install.packages("boot", repos = "http://cran.us.r-project.org")
+if(!require(QuantPsyc)) install.packages("QuantPsyc", repos = "http://cran.us.r-project.org")
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+title:"Después de la Universidad, ¿Seguir estudiando o adquirir experiencia?"
+author:"Luis Reyes y George Jaramillo" date:"`r Sys.Date()`"
+---
+```{r data, include=FALSE}
+if(!require(readstata13)) install.packages("readstata13", repos = "http://cran.us.r-project.org")
+if(!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
+if(!require(scales)) install.packages("scales", repos = "http://cran.us.r-project.org")
+if(!require(dplyr)) install.packages("dplyr", repos = "http://cran.us.r-project.org")
+if(!require(car)) install.packages("car", repos = "http://cran.us.r-project.org")
+if(!require(boot)) install.packages("boot", repos = "http://cran.us.r-project.org")
+if(!require(QuantPsyc)) install.packages("QuantPsyc", repos = "http://cran.us.r-project.org")
+if(!require(ggplot2)) install.packages("ggplot2", repos = "http://cran.us.r-project.org")
+library(haven)
+library(tidyverse)
+library(readr)
+library(readxl)
+options(digits=2)
+#Carga de data 2021(local)
+
+###################################
+
+#Carga de data automatizada 2021
+id <- "1ec12gRLmg6xemcb5h-Xpgc2PEzsvHKJe"
+url <- paste("https://drive.google.com/uc?export=download&id=", id, sep = "")
+
+# creates a temporary directory
+td <- tempdir()
+# creates a placeholder file
+tf <- tempfile(tmpdir = td, fileext = ".zip")
+# downloads the data into the placeholder file
+download.file(url = url, destfile = tf,mode="wb")
+# extracts the files into the temporary directory
+unzip(tf, exdir = td, overwrite = TRUE)
+# file path containing the datasets
+fp <- file.path(td, list.files(path = td)[2])
+
+library(foreign)
+Enemdu2021p <- read.spss(fp) 
+Enemdu2021p <- as.data.frame(Enemdu2021p)
+
+
+
+###################################
+#Cantidad de personas con titulo de cuarto nivel
+cuarto_nivel<- as.numeric(Enemdu2021p %>% filter(p10a=="Post-grado")%>% filter(between(as.numeric(p03),30,35)) %>% count(p10a))
+#Cantidad de personas con estudios de 4to nivel y un empleo pleno
+cuarto_niv_empleo <- Enemdu2021p %>% filter(p10a=="Post-grado") %>% filter(between(as.numeric(p03),30,35)) %>% filter(condact=="Adecuado") %>% count(p10a)
+#variable usada en articulo representada en porcentaje
+varcuarto_niv_empleo <- cuarto_niv_empleo$n/cuarto_nivel*100
+
+#Cantidad de personas con titulo de tercer nivel
+tercer_nivel<- as.numeric(Enemdu2021p %>% filter(p10a=="Superior Universitario")  %>% filter(between(as.numeric(p03),30,35)) %>% count(p10a))
+#Cantidad de personas con estudios de 3er nivel y un empleo pleno
+tercer_niv_empleo <- Enemdu2021p %>% filter(p10a=="Superior Universitario") %>%  filter(condact=="Adecuado") %>% filter(between(as.numeric(p03),30,35)) %>% count(p10a)
+#variable usada en articulo
+vartercer_niv_empleo <- tercer_niv_empleo$n/tercer_nivel*100
+
+
+#Procesamiento de data
+
+#Se elimina valores atipicos en ingresos y se crea una nueva columna
+Enemdu2021p$ingrl_clean <- ifelse(as.numeric(Enemdu2021p$ingrl) > 5000
+                               | is.na(Enemdu2021p$ingrl)|Enemdu2021p$ingrl=="No informa", NA, Enemdu2021p$ingrl)
+
+
+#Promedio de ingresos de personas entre (30-35) con estudios de 4to nivel y un empleo pleno
+ingreso_prom_cuarto <- Enemdu2021p %>% filter(p10a=="Post-grado") %>% filter(condact=="Adecuado") %>% filter(between(as.numeric(p03),30,35))
+varingreso_prom_cuarto <- mean(ingreso_prom_cuarto$ingrl_clean)
+
+
+#Promedio de ingresos de personas entre (30-35) con estudios de 3er nivel y un empleo pleno
+ingreso_prom_tercer <- Enemdu2021p %>% filter(p10a=="Superior Universitario") %>% filter(condact=="Adecuado") %>% filter(between(as.numeric(p03), 30,35)) 
+#variable usada en articulo
+varingreso_prom_tercer <- mean(ingreso_prom_tercer$ingrl_clean)
+
+
+primer_val <- ifelse(varingreso_prom_cuarto>varingreso_prom_tercer, "de estudio", "de experiencia")
+segun_val <- ifelse(varingreso_prom_cuarto>varingreso_prom_tercer, "experiencia", "conocimientos")
 ```
 
-
-
-```
 # Después de la Universidad, ¿Seguir estudiando o adquirir experiencia?
-### El salario en Ecuador ha sido cuestionado durante años, sobre todo por los mas jóvenes, quienes al momento de culminar una carrera universitaria se encuentran indecisos al tomar la decision de adquirir experiencia laboral o mantenerse estudiando despues de obtener un título de grado. La cuestión es, ¿Qué perfil es mas buscado por el empleador?. Es muy común observar ofertas laborales que requieren personal de 25 a 35 años con un alto nivel de estudio con experiencia minima de 3 a 5 años o más.Lo cual se complica para los jovenes quienes no pueden adquirir un empleo dado que no tienen experiencia por dedicarse a estudiar o a su vez no han podido adquirir un nivel mas de estudio por encontrar un trabajo fuera de su especialización para subsitir.
-### Pues bien, según la encuesta realizada por el Instituto Nacional de Estadisticas y Censo (INEC) en el último trimestre del 2021, existe un total de ________ de personas que tienen un estudio de 4to nivel y cuentan con empleo pleno mientras que, ______ personas culminaron la carrera universitaria y se dedicaron a trabajar. 
-### Sin embargo, la conyontura se da en quienes obtienen un mejor salario.Dentro de un rango de edad de 25 a 35 años, las personas que cuentan con estudios superiores a una licenciatura (maestría o PhD) cuentan con un ingreso salarial aproximadamente de ____ y por otro lado, quienes se dedicaron a adquierir experiencia laboral demuestran remuneraciones de __________ en promedio.Esto explicaría que las empresas tienen una mayor valoracion salarial en lo que respecta a los años __________ mientras que el tiempo invertido en adquirir_______ pasa a segundo plano.
+### El salario en Ecuador ha sido cuestionado durante años, sobre todo por los mas jóvenes, quienes al momento de culminar una carrera universitaria se encuentran indecisos al tomar la decision de adquirir experiencia laboral o mantenerse estudiando despues de obtener un título de grado. La cuestión es, ¿Qué perfil es mas buscado por el empleador?. Es muy común observar ofertas laborales que requieren personal joven con un alto nivel de estudio con experiencia minima desde 3 años o más.Lo cual se complica ya que, los jovenes no pueden adquirir un empleo dado que no tienen experiencia por dedicarse a estudiar o a su vez no han podido adquirir un nivel mas de estudio por encontrar un trabajo fuera de su especialización para subsitir.
+### Pues bien, según la encuesta realizada por el Instituto Nacional de Estadisticas y Censo (INEC) en el último trimestre del 2021, el `r varcuarto_niv_empleo[2]`% de personas que tienen un estudio de 4to nivel cuentan con empleo pleno mientras que, el `r vartercer_niv_empleo[2]`% de personas que culminaron la carrera universitaria y se dedicaron a trabajar cuentan con un empleo pleno
+### Sin embargo, la conyontura se da en quienes obtienen un mejor salario.Dentro de un rango de edad de 30 a 35 años, las personas que cuentan con estudios superiores a una licenciatura (maestría o PhD) cuentan con un ingreso salarial aproximadamente de $`r varingreso_prom_cuarto` y por otro lado, quienes se dedicaron a adquierir experiencia laboral demuestran remuneraciones de $`r varingreso_prom_tercer` en promedio.Esto explicaría que las empresas tienen una mayor valoracion en lo que respecta a los años `r primer_val` mientras que el tiempo invertido en adquirir `r segun_val` parece 
