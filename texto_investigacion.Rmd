@@ -1,19 +1,4 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
-title:"Después de la Universidad, ¿Seguir estudiando o adquirir experiencia?"
-author:"Luis Reyes y George Jaramillo" date:"`r Sys.Date()`"
----
-```{r data, include=FALSE}
-if(!require(readstata13)) install.packages("readstata13", repos = "http://cran.us.r-project.org")
-if(!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
-if(!require(scales)) install.packages("scales", repos = "http://cran.us.r-project.org")
-if(!require(dplyr)) install.packages("dplyr", repos = "http://cran.us.r-project.org")
-if(!require(car)) install.packages("car", repos = "http://cran.us.r-project.org")
-if(!require(boot)) install.packages("boot", repos = "http://cran.us.r-project.org")
-if(!require(QuantPsyc)) install.packages("QuantPsyc", repos = "http://cran.us.r-project.org")
+
 ---
 output:
   pdf_document: default
@@ -102,4 +87,4 @@ segun_val <- ifelse(varingreso_prom_cuarto>varingreso_prom_tercer, "experiencia"
 # Después de la Universidad, ¿Seguir estudiando o adquirir experiencia?
 ### El salario en Ecuador ha sido cuestionado durante años, sobre todo por los mas jóvenes, quienes al momento de culminar una carrera universitaria se encuentran indecisos al tomar la decision de adquirir experiencia laboral o mantenerse estudiando despues de obtener un título de grado. La cuestión es, ¿Qué perfil es mas buscado por el empleador?. Es muy común observar ofertas laborales que requieren personal joven con un alto nivel de estudio con experiencia minima desde 3 años o más.Lo cual se complica ya que, los jovenes no pueden adquirir un empleo dado que no tienen experiencia por dedicarse a estudiar o a su vez no han podido adquirir un nivel mas de estudio por encontrar un trabajo fuera de su especialización para subsitir.
 ### Pues bien, según la encuesta realizada por el Instituto Nacional de Estadisticas y Censo (INEC) en el último trimestre del 2021, el `r varcuarto_niv_empleo[2]`% de personas que tienen un estudio de 4to nivel cuentan con empleo pleno mientras que, el `r vartercer_niv_empleo[2]`% de personas que culminaron la carrera universitaria y se dedicaron a trabajar cuentan con un empleo pleno
-### Sin embargo, la conyontura se da en quienes obtienen un mejor salario.Dentro de un rango de edad de 30 a 35 años, las personas que cuentan con estudios superiores a una licenciatura (maestría o PhD) cuentan con un ingreso salarial aproximadamente de $`r varingreso_prom_cuarto` y por otro lado, quienes se dedicaron a adquierir experiencia laboral demuestran remuneraciones de $`r varingreso_prom_tercer` en promedio.Esto explicaría que las empresas tienen una mayor valoracion en lo que respecta a los años `r primer_val` mientras que el tiempo invertido en adquirir `r segun_val` parece 
+### Sin embargo, la conyontura se da en quienes obtienen un mejor salario.Dentro de un rango de edad de 30 a 35 años, las personas que cuentan con estudios superiores a una licenciatura (maestría o PhD) cuentan con un ingreso salarial aproximadamente de $`r varingreso_prom_cuarto` y por otro lado, quienes se dedicaron a adquierir experiencia laboral demuestran remuneraciones de $`r varingreso_prom_tercer` en promedio.Esto explicaría que las empresas tienen una mayor valoracion en lo que respecta a los años `r primer_val` mientras que el tiempo invertido en adquirir `r segun_val` parece no ser tomado como prioridad
