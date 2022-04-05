@@ -46,7 +46,8 @@ Enemdu2021p <- as.data.frame(Enemdu2021p)
 
 
 
-###################################
+
+#_##################################
 #Cantidad de personas con titulo de cuarto nivel
 cuarto_nivel<- as.numeric(Enemdu2021p %>% filter(p10a=="Post-grado")%>% filter(between(as.numeric(p03),30,35)) %>% count(p10a))
 #Cantidad de personas con estudios de 4to nivel y un empleo pleno
